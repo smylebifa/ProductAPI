@@ -1,0 +1,539 @@
+openapi: "3.0.2"
+info:
+  title: "Product list"
+  description: "The list is used to keep track of the quantity, cost of products and purchases made"
+  version: "1.0"
+  contact:
+    name: "Product list"
+servers:
+- url: https://api.openweathermap.org/data/2.5/
+
+paths:
+
+  /products/{user_id}:
+    get:
+      tags:
+      - Product list
+      summary: "Getting products of user"
+      description: "Getting name and quantity of products of current user"
+      operationId: ProductList
+      parameters:
+      - name: user_id
+        in: path
+        description: id of user
+        required: true
+        schema:
+          type: string
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+                $ref: '#/components/schemas/product'
+
+                    
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+  
+  
+  /products/{user_id}/{product_id}:
+    post:
+      security:
+      - app_id: []
+
+      tags:
+      - Product list
+      summary: "Add product in user's product list"
+      description: "Add product in product list by it's id"
+      operationId: AddInSProductList
+      parameters:
+      - name: user_id
+        in: path
+        description: id of user
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        description: id of product
+        required: true
+        schema:
+          type: string
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+                          
+                    
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+
+
+  /products/delete/{user_id}/{product_id}:
+    delete:
+      security:
+      - app_id: []
+      
+      tags:
+      - Product list
+      summary: "Delete product by id from user's product list"
+      description: "Delete product by id"
+      operationId: DeleteProduct
+      parameters:
+      - name: user_id
+        in: path
+        description: id of user
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        description: id of product
+        required: true
+        schema:
+          type: string
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+  
+  
+  /shopping_list/{user_id}:
+    get:
+      tags:
+      - Shopping list
+      summary: "Getting shopping list of user"
+      description: "Getting name and quantity of purchases to buy"
+      operationId: ShoppingList
+      parameters:
+      - name: user_id
+        in: path
+        description: id of user
+        required: true
+        schema:
+          type: string
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+                $ref: '#/components/schemas/shopping_list'
+
+                          
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+
+
+  /shopping_list/{user_id}/{product_id}:
+    post:
+      security:
+      - app_id: []
+
+      tags:
+      - Shopping list
+      summary: "Add product in user's shopping list"
+      description: "Add product by name and quantity to user's sopping list"
+      operationId: AddInShoppingList
+      parameters:
+      - name: user_id
+        in: path
+        description: id of user
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        description: id of product
+        required: true
+        schema:
+          type: string
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+                
+                
+  /shopping_list/buy/{user_id}:
+    post:
+      security:
+        - app_id: []
+      
+      tags:
+      - Shopping list
+      summary: "Buy products that user have in his shopping list"
+      description: "Buy products"
+      operationId: ShoppingListBuy
+      parameters:
+      - name: user_id
+        in: path
+        description: id of user
+        required: true
+        schema:
+          type: string
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+                    
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+
+
+  /price_list:
+    get:
+      tags:
+      - Price list
+      summary: "Getting price list"
+      description: "Getting name and price of products"
+      operationId: Prices
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+                $ref: '#/components/schemas/price'
+
+
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+
+
+  /price_list/{product_id}:
+    put:
+      security:
+      - app_id: []
+
+      tags:
+      - Price list
+      summary: "Change price of product"
+      description: "Change price of product by product id and new price"
+      operationId: ChangePrice
+      parameters:
+      - name: product_id
+        in: path
+        description: id of product
+        required: true
+        schema:
+          type: string
+      - name: new_price
+        in: header
+        description: id of price
+        required: true
+        schema:
+          type: string
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+
+
+  /users:
+    get:
+      tags:
+      - Users
+      summary: "Getting users"
+      description: "Getting usernames"
+      operationId: Users
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+                $ref: '#/components/schemas/user'
+                       
+
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+
+
+  /users/add:               
+    post:
+      security:
+      - app_id: []
+
+      tags:
+      - Users
+      summary: "Add user"
+      description: "Add user"
+      operationId: AddUser
+      parameters:
+      - name: login
+        in: header
+        description: login of user
+        required: true
+        schema:
+          type: string
+          example: "user123"
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+                properties:
+                  response:
+                   type: string
+                   example: "User successfully added"
+                    
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error"
+                type: string
+                example: "Error has occured"
+              
+
+  /users/{user_id}: 
+    delete:
+      security:
+      - app_id: []
+
+      tags:
+      - Users
+      summary: "Delete user"
+      description: "Delete user by id"
+      operationId: DeleteUser
+      parameters:
+      - name: user_id
+        in: path
+        description: id of user
+        required: true
+        schema:
+          type: string
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Sample
+                type: object
+                properties:
+                    response:
+                      type: string
+                      example: "User successfully deleted"
+                    
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: "Error has occured"
+                type: string
+                example: "Error"
+  
+
+
+components:
+  securitySchemes:
+    app_id:
+      type: apiKey
+      description: API key to authorize requests. If you don't have an OpenWeatherMap API key, use `fd4698c940c6d1da602a70ac34f0b147`.
+      name: appid
+      in: header
+
+  schemas: 
+    user: 
+      type: array
+      items:
+        properties:
+          id:
+            type: string
+            description: identificator of user
+            example: 111
+          name:
+            type: string
+            description: name of user
+            example: ivan
+    price: 
+      type: array
+      items:
+        properties:
+          id:
+            type: string
+            description: identificator of user
+            example: 111
+          name:
+            type: string
+            description: name of product
+            example: bread
+          price:
+            type: number
+            description: price of product
+            example: 54
+    product: 
+      type: array
+      items:
+        properties:
+          id:
+            type: string
+            description: identificator of product
+            example: 111
+          name:
+            type: string
+            description: name of product
+            example: Bread
+          count:
+            type: integer
+            description: count of product
+            example: 2
+    shopping_list: 
+      type: array
+      items:
+        properties:
+          id:
+            type: string
+            description: identificator of product
+            example: 111
+          name:
+            type: string
+            description: name of product
+            example: Bread
+          count:
+            type: integer
+            description: count of product
+            example: 2
+          price:
+            type: number
+            description: price of product
+            example: 54
+  
+
+
+# Описание функционала веб приложения "Учет покупок".
+
+# 1) Есть списки продуктов (product_list), каждый список относится к одному владельцу. 
+# Список содержит идентификатор владельца продукта, название и количество (user_id, name, count).
+# 2) Есть список пользователей (id, name, password), пользователи являются владельцами продуктов.
+# 3) Есть список необходимых покупок (shopping_list), каждая покупка характеризуется владельцем, 
+# названием продукта, количеством и ценой (user_id, name, count, price).
+# 4) Цена на продукты хранится в price_list, который содержит название продукта 
+# и цену (цена должна быть задана и быть > 0).
+
+# 5) Можно посмотреть все продукты в product_list, shopping_list, а также цены на продукты в price_list.
+
+# 6) В shopping_list можно добавлять покупки с указанием названия и количества, 
+# в случае указания только названия будет добавлен один продукт.
+
+# 7) Есть возможность покупать продукты, в этом случае количество продуктов увеличится в product_list и обнулится
+# в shopping_list, в случае если цена на продукт не найдена в price_list, продукт не попадает на склад
+# с выводом предупреждения пользователю об отсутствии продукта в справочнике.
+
+# 8) Можно удалять продукты в product_list по имени.
+
+# 9) Возможно изменять цену на продукт.
+
+# 10) Можно добавлять и удалять пользователей.
+
+
+# Ссылка для изучения - https://starkovden.github.io/step6-security-object.html
